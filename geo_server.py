@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 IPINFO_TOKEN = "4e9a9682e56c8b"
 
-@app.route('/')
+@app.route("/")
 def get_geo():
     user_ip = request.headers.get('X-Forwarded-For', request.remote_addr)
     response = requests.get(f"https://ipinfo.io/{user_ip}?token={IPINFO_TOKEN}").json()
@@ -24,7 +24,6 @@ def get_geo():
     <p>Провайдер: {org}</p>
     <p>Локация (широта,долгота): {loc}</p>
     """
-
+    
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=10000)
-
