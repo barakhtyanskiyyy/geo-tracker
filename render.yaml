@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: geo-tracker
+    env: python
+    buildCommand: ""
+    startCommand: python geo_server.py
+    plan: free
