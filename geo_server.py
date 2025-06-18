@@ -1,29 +1,35 @@
 from flask import Flask, request
 import requests
+import os
 
 app = Flask(__name__)
-
-# Вставь свой токен сюда:
-IPINFO_TOKEN = "4e9a9682e56c8b"
+IPINFO_TOKEN = os.getenv("4e9a9682e56c8b")
 
 @app.route('/')
 def get_geo():
-    # Получаем IP пользователя
     user_ip = request.headers.get('X-Forwarded-For', request.remote_addr)
+    
+    if not IPINFO_TOKEN:
+        return "Ошибка: IPINFO_TOKEN не задан."
 
-    # Запрашиваем данные с IPinfo
     response = requests.get(f"https://ipinfo.io/{user_ip}?token={IPINFO_TOKEN}")
     data = response.json()
 
-    # Формируем вывод
+    city = data.get('city')
+    region = data.get('region')
+    country = data.get('country')
+    org = data.get('org')
+    loc = data.get('loc')
+
     return f"""
-        <h2>IP: {user_ip}</h2>
-        <p>Город: {data.get('city')}</p>
-        <p>Регион: {data.get('region')}</p>
-        <p>Страна: {data.get('country')}</p>
-        <p>Провайдер: {data.get('org')}</p>
-        <p>Локация (широта,долгота): {data.get('loc')}</p>
+    <h1>IP: {user_ip}</h1>
+    <p>Город: {city}</p>
+    <p>Регион: {region}</p>
+    <p>Страна: {country}</p>
+    <p>Провайдер: {org}</p>
+    <p>Локация: {loc}</p>
     """
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5050)
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
