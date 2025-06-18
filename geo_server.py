@@ -8,6 +8,8 @@ IPINFO_TOKEN = "4e9a9682e56c8b"
 @app.route("/")
 def get_geo():
     user_ip = request.headers.get('X-Forwarded-For', request.remote_addr)
+    print("📡 Новый переход с IP:", user_ip)
+    
     response = requests.get(f"https://ipinfo.io/{user_ip}?token={IPINFO_TOKEN}").json()
 
     city = response.get("city")
