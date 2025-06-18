@@ -8,7 +8,7 @@ IPINFO_TOKEN = "4e9a9682e56c8b"
 @app.route('/')
 def get_geo():
     user_ip = request.headers.get('X-Forwarded-For', request.remote_addr)
-   response = requests.get(f"https://ipinfo.io/{user_ip}?token={IPINFO_TOKEN}").json()
+    response = requests.get(f"https://ipinfo.io/{user_ip}?token={IPINFO_TOKEN}").json()
 
     city = response.get("city")
     region = response.get("region")
@@ -26,4 +26,4 @@ def get_geo():
     """
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=10000)  # порт Render сам подставит через render.yaml
+    app.run(host="0.0.0.0", port=10000)
